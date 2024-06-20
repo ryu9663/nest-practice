@@ -1,23 +1,23 @@
-import { Controller, Get, Param } from '@nestjs/common';
-
-interface BoardInfo {
-  id: string;
-  title: string;
-  content: string;
-}
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Board } from 'src/boards/board.model';
+import { BoardsService } from 'src/boards/boards.service';
 
 @Controller('boards')
 export class BoardsController {
-  @Get('/:id')
-  async getBoardInfo(@Param('id') boardId: string): Promise<BoardInfo> {
-    if (boardId === '1') {
-      return {
-        id: '1',
-        title: '보드 제목',
-        content: '보드 내용',
-      };
-    }
-    console.log('하이', boardId);
-    return;
+  constructor(private boardsService: BoardsService) {}
+  @Get('/')
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardsService.getAllBoards();
+  }
+
+  @Post('/')
+  async createBoard(
+    @Body('title') title: string,
+    @Body('description') description: string,
+  ): Promise<Board> {
+    return this.boardsService.createBoard({
+      title,
+      description,
+    });
   }
 }
