@@ -1,5 +1,12 @@
+import { IsNotEmpty } from 'class-validator';
+
 export class CreateUserDto {
-  readonly name: string;
-  readonly email: string;
-  readonly password: string;
+  @IsNotEmpty()
+  username: string;
+  @IsNotEmpty()
+  id: string;
+  @IsNotEmpty()
+  grade: string;
+  @IsNotEmpty()
+  introduction: string;
 }
