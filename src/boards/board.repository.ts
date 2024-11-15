@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BoardStatus } from 'src/boards/board-status.enum';
 import { Board } from 'src/boards/board.entity';
 import { CreateBoardDto } from 'src/boards/dto/create-board.dto';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, DeleteResult, Repository } from 'typeorm';
 
 @Injectable()
 export class BoardsRepository {
@@ -12,12 +12,12 @@ export class BoardsRepository {
     this.boardsRepository = this.dataSource.getRepository(Board);
   }
 
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardsRepository.find();
+  }
+
   async getBoardById(id: number): Promise<Board> {
     const found = await this.boardsRepository.findOneBy({ id });
-
-    if (!found) {
-      throw new Error('Board not found');
-    }
 
     return found;
   }
@@ -31,5 +31,10 @@ export class BoardsRepository {
     });
     await this.boardsRepository.save(newBoard);
     return newBoard;
+  }
+
+  async deleteBoard(id: number): Promise<DeleteResult> {
+    const result = await this.boardsRepository.delete({ id });
+    return result;
   }
 }
