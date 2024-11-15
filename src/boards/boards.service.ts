@@ -1,22 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from 'src/boards/board.entity';
-import { BoardRepository } from 'src/boards/board.repository';
+import { BoardsRepository } from 'src/boards/board.repository';
+import { CreateBoardDto } from 'src/boards/dto/create-board.dto';
 
 @Injectable()
 export class BoardsService {
-  constructor(
-    @InjectRepository(BoardRepository)
-    private boardRepository: BoardRepository,
-  ) {}
+  constructor(private readonly boardsRepository: BoardsRepository) {}
 
   async getBoardById(id: number): Promise<Board> {
-    const found = await this.boardRepository.findOneBy({ id });
+    const found = await this.boardsRepository.getBoardById(id);
 
     if (!found) {
       throw new Error('Board not found');
     }
 
     return found;
+  }
+
+  async createBoard(createBoard: CreateBoardDto): Promise<Board> {
+    const { title, description, status } = createBoard;
+
+    const board = this.boardsRepository.createBoard({
+      title,
+      description,
+      status,
+    });
+
+    return board;
   }
 }
