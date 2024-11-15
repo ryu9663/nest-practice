@@ -37,4 +37,8 @@ export class BoardsRepository {
     const result = await this.boardsRepository.delete({ id });
     return result;
   }
+
+  async saveBoard(board: Board): Promise<Board> {
+    return this.boardsRepository.save(board);
+  }
 }
