@@ -14,12 +14,6 @@ export class AuthService {
       throw new BadRequestException('Username and password are required');
     }
 
-    // 중복 사용자 검사
-    const existingUser = await this.userRepository.findByUsername(username);
-    if (existingUser) {
-      throw new BadRequestException('Username already exists');
-    }
-
     const newUser = await this.userRepository.createUser({
       username,
       password,
