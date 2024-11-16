@@ -57,7 +57,6 @@ const USERS = [
 export class UsersController {
   @Get()
   async getUsers(): Promise<UserInfoDto[]> {
-    console.log('hhi');
     return USERS;
   }
 
