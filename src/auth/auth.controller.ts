@@ -24,4 +24,13 @@ export class AuthController {
     const user = await this.authService.signUp(authCredentialDto);
     return { message: 'User successfully registered', user }; // 성공 메시지 반환
   }
+
+  @Post('/signin')
+  @HttpCode(HttpStatus.OK) // 200 상태 코드 명시
+  async signIn(
+    @Body() authCredentialDto: AuthCredentialDto,
+  ): Promise<{ message: string; user: Partial<User> }> {
+    const user = await this.authService.signIn(authCredentialDto);
+    return { message: 'User successfully logged in', user }; // 성공 메시지 반환
+  }
 }

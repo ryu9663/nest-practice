@@ -29,7 +29,6 @@ export class UserRepository {
       await this.userRepository.save(user);
       return user;
     } catch (e) {
-      console.log('에러', e);
       if (e.code === '23505') {
         throw new ConflictException('Username already exists');
       } else {

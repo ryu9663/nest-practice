@@ -1,8 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthCredentialDto } from 'src/auth/dto/auth-credential.dto';
 import { User } from 'src/auth/user.entity';
 import { UserRepository } from 'src/auth/user.repository';
-
+import * as bcrypt from 'bcryptjs';
 @Injectable()
 export class AuthService {
   constructor(private readonly userRepository: UserRepository) {}
@@ -19,5 +23,18 @@ export class AuthService {
       password,
     });
     return newUser;
+  }
+
+  async signIn(authCredential: AuthCredentialDto): Promise<User> {
+    const { username, password } = authCredential;
+
+    const user = await this.userRepository.findByUsername(username);
+    const isMatching = await bcrypt.compare(password, user.password);
+
+    if (user && isMatching) {
+      return user;
+    } else {
+      throw new UnauthorizedException('login failed');
+    }
   }
 }
