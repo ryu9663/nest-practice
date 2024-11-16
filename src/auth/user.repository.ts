@@ -6,6 +6,7 @@ import {
 import { AuthCredentialDto } from 'src/auth/dto/auth-credential.dto';
 import { User } from 'src/auth/user.entity';
 import { DataSource, Repository } from 'typeorm';
+import * as bcript from 'bcryptjs';
 
 @Injectable()
 export class UserRepository {
@@ -16,7 +17,14 @@ export class UserRepository {
   }
 
   async createUser(authCrendentialDto: AuthCredentialDto): Promise<User> {
-    const user = this.userRepository.create(authCrendentialDto);
+    const { username, password } = authCrendentialDto;
+    const salt = await bcript.genSalt();
+    const hashedPassword = await bcript.hash(password, salt);
+
+    const user = this.userRepository.create({
+      username,
+      password: hashedPassword,
+    });
     try {
       await this.userRepository.save(user);
       return user;
