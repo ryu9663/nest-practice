@@ -4,9 +4,12 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
 import { AuthCredentialDto } from 'src/auth/dto/auth-credential.dto';
 import { User } from 'src/auth/user.entity';
@@ -35,5 +38,11 @@ export class AuthController {
   }> {
     const accessToken = await this.authService.signIn(authCredentialDto);
     return { message: 'User successfully logged in', data: accessToken };
+  }
+
+  @Post('/test')
+  @UseGuards(AuthGuard())
+  test(@Req() req) {
+    console.log('리퀘', req.user);
   }
 }
