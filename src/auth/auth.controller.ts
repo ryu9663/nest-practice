@@ -4,7 +4,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -12,6 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
 import { AuthCredentialDto } from 'src/auth/dto/auth-credential.dto';
+import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 
 @Controller('auth')
@@ -42,7 +42,7 @@ export class AuthController {
 
   @Post('/test')
   @UseGuards(AuthGuard())
-  test(@Req() req) {
-    console.log('리퀘', req.user);
+  test(@GetUser() user: User) {
+    console.log('리퀘', user);
   }
 }
