@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { User } from 'src/auth/user.entity';
 import { BoardStatus } from 'src/boards/board-status.enum';
 import { Board } from 'src/boards/board.entity';
 import { CreateBoardDto } from 'src/boards/dto/create-board.dto';
@@ -22,12 +23,13 @@ export class BoardsRepository {
     return found;
   }
 
-  async createBoard(createBoard: CreateBoardDto) {
+  async createBoard(createBoard: CreateBoardDto, user: User) {
     const { title, description, status = BoardStatus.PUBLIC } = createBoard;
     const newBoard = this.boardsRepository.create({
       title,
       description,
       status,
+      user,
     });
     await this.boardsRepository.save(newBoard);
     return newBoard;

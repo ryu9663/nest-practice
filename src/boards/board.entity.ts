@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { User } from 'src/auth/user.entity';
 import { BoardStatus } from 'src/boards/board-status.enum';
 import {

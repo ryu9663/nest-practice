@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Board } from 'src/boards/board.entity';
 import {
   BaseEntity,
