@@ -40,8 +40,8 @@ export class BoardsService {
     return board;
   }
 
-  async deleteBoard(id: number): Promise<void> {
-    const deleteResult = await this.boardsRepository.deleteBoard(id);
+  async deleteBoard(id: number, user: User): Promise<void> {
+    const deleteResult = await this.boardsRepository.deleteBoard(id, user);
 
     if (deleteResult.affected === 0) {
       throw new NotFoundException(`Board with ID ${id} not found`);
