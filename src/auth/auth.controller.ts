@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Post,
   UseGuards,
   UsePipes,
@@ -15,8 +17,18 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 
 @Controller('auth')
+@UseGuards(AuthGuard())
 export class AuthController {
+  private logger = new Logger('UsersController');
+
   constructor(private authService: AuthService) {}
+
+  @Get('/users')
+  async getAllUsers(@GetUser() user: User): Promise<User[]> {
+    this.logger.log('Retrieving all users by ' + user.username);
+    const users = await this.authService.getAllUsers();
+    return users;
+  }
 
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED) // 201 상태 코드 명시
@@ -40,8 +52,7 @@ export class AuthController {
     return { message: 'User successfully logged in', data: accessToken };
   }
 
-  @Post('/test')
-  @UseGuards(AuthGuard())
+  @Get('/test')
   test(@GetUser() user: User) {
     console.log('리퀘', user);
   }

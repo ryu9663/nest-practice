@@ -15,6 +15,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async getAllUsers(): Promise<User[]> {
+    return this.userRepository.findAll();
+  }
   async signUp(authCredential: AuthCredentialDto): Promise<User> {
     const { username, password } = authCredential;
 

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -23,10 +24,12 @@ import { BoardStatusValidationPipe } from 'src/boards/pipes/board-status-validat
 @Controller('boards')
 @UseGuards(AuthGuard())
 export class BoardsController {
+  private logger = new Logger('BoardsController');
   constructor(private boardsService: BoardsService) {}
 
   @Get()
   getAllBoards(): Promise<Board[]> {
+    this.logger.log('Retrieving all boards');
     return this.boardsService.getAllBoards();
   }
   @Get('/:id')

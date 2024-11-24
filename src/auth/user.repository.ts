@@ -16,6 +16,10 @@ export class UserRepository {
     this.userRepository = this.dataSource.getRepository(User);
   }
 
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+
   async createUser(authCrendentialDto: AuthCredentialDto): Promise<User> {
     const { username, password } = authCrendentialDto;
     const salt = await bcript.genSalt();
