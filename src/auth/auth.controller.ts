@@ -17,13 +17,13 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 
 @Controller('auth')
-@UseGuards(AuthGuard())
 export class AuthController {
   private logger = new Logger('UsersController');
 
   constructor(private authService: AuthService) {}
 
   @Get('/users')
+  @UseGuards(AuthGuard())
   async getAllUsers(@GetUser() user: User): Promise<User[]> {
     this.logger.log('Retrieving all users by ' + user.username);
     const users = await this.authService.getAllUsers();
@@ -53,6 +53,7 @@ export class AuthController {
   }
 
   @Get('/test')
+  @UseGuards(AuthGuard())
   test(@GetUser() user: User) {
     console.log('리퀘', user);
   }
