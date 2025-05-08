@@ -52,6 +52,13 @@ export class AuthController {
     return { message: 'User successfully logged in', data: accessToken };
   }
 
+  @Post('/signout')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard()) // JWT 토큰으로 인증된 사용자만 접근
+  async signOut(@GetUser() user: User): Promise<{ message: string }> {
+    return this.authService.signOut(user);
+  }
+
   @Get('/test')
   @UseGuards(AuthGuard())
   test(@GetUser() user: User) {

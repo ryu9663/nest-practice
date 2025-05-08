@@ -50,4 +50,9 @@ export class AuthService {
       throw new UnauthorizedException('login failed');
     }
   }
+
+  async signOut(user: User): Promise<{ message: string }> {
+    // 추후 refreshToken DB 제거 등 확장 가능
+    return { message: `${user.username} logged out successfully` };
+  }
 }
